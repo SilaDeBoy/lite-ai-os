@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lite AI OS</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://js.puter.com/v2/"></script>
+</head>
+<body>
+  <div class="os">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">◉</span>
+        <span>Lite AI OS</span>
+      </div>
+      <div class="clock" id="clock"></div>
+      <div class="status-pill" id="statusPill">Ready</div>
+    </header>
+
+    <div class="layout">
+      <!-- Sidebar navigation -->
+      <nav class="sidebar">
+        <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+        <button class="nav-btn" data-view="jobs">Job Tracker</button>
+        <button class="nav-btn" data-view="ai">AI Assistant</button>
+        <button class="nav-btn" data-view="mpesa">M-Pesa Log</button>
+        <button class="nav-btn" data-view="tasks">Tasks</button>
+        <button class="nav-btn" data-view="notes">Notes</button>
+      </nav>
+
+      <!-- Main content -->
+      <main class="content">
+
+        <!-- DASHBOARD -->
+        <section id="view-dashboard" class="view active">
+          <h1>Welcome</h1>
+          <p class="subtitle">Your personal lite AI workspace</p>
+
+          <div class="cards">
+            <div class="card">
+              <h3>Jobs</h3>
+              <p class="big" id="jobCount">0</p>
+              <p class="muted">Applications tracked</p>
+            </div>
+            <div class="card">
+              <h3>Tasks</h3>
+              <p class="big" id="taskCount">0</p>
+              <p class="muted">Open tasks</p>
+            </div>
+            <div class="card">
+              <h3>M-Pesa</h3>
+              <p class="big" id="mpesaTotal">0</p>
+              <p class="muted">Logged entries</p>
+            </div>
+          </div>
+
+          <div class="notice">
+            <strong>Important:</strong> This app helps you organize and write.
+            It does <em>not</em> automatically apply for jobs or send real money to M-Pesa.
+            You stay in full control of applications and payments.
+          </div>
+        </section>
+
+        <!-- JOB TRACKER -->
+        <section id="view-jobs" class="view">
+          <div class="view-header">
+            <h1>Job Tracker</h1>
+            <button class="btn primary" id="addJobBtn">+ Add Job</button>
+          </div>
+
+          <div class="form-card hidden" id="jobForm">
+            <input type="text" id="jobTitle" placeholder="Job title" />
+            <input type="text" id="jobCompany" placeholder="Company" />
+            <input type="url" id="jobLink" placeholder="Job link (optional)" />
+            <select id="jobStatus">
+              <option value="Wishlist">Wishlist</option>
+              <option value="Applied">Applied</option>
+              <option value="Interview">Interview</option>
+              <option value="Offer">Offer</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+            <textarea id="jobNotes" placeholder="Notes / cover letter ideas"></textarea>
+            <div class="form-actions">
+              <button class="btn" id="cancelJob">Cancel</button>
+              <button class="btn primary" id="saveJob">Save</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Company</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="jobTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- AI ASSISTANT -->
+        <section id="view-ai" class="view">
+          <h1>AI Assistant</h1>
+          <p class="subtitle">Help with cover letters, answers, and messages</p>
+
+          <div class="ai-box">
+            <div class="messages" id="aiMessages"></div>
+            <div class="ai-input">
+              <textarea id="aiInput" placeholder="Ask for a cover letter, interview answer, or rewrite..." rows="2"></textarea>
+              <button class="btn primary" id="aiSend">Send</button>
+            </div>
+            <p class="hint">Uses Puter.js when available. Works best with internet.</p>
+          </div>
+        </section>
+
+        <!-- M-PESA LOG -->
+        <section id="view-mpesa" class="view">
+          <div class="view-header">
+            <h1>M-Pesa Log</h1>
+            <button class="btn primary" id="addMpesaBtn">+ Log Payment</button>
+          </div>
+
+          <div class="notice warning">
+            This is only a <strong>record book</strong>.  
+            It does <strong>not</strong> send money.  
+            You must make real M-Pesa payments yourself using your phone.
+          </div>
+
+          <div class="form-card hidden" id="mpesaForm">
+            <input type="text" id="mpesaTo" placeholder="To (name or number)" value="" />
+            <input type="number" id="mpesaAmount" placeholder="Amount (TZS)" />
+            <input type="text" id="mpesaReason" placeholder="Reason / note" />
+            <div class="form-actions">
+              <button class="btn" id="cancelMpesa">Cancel</button>
+              <button class="btn primary" id="saveMpesa">Save Log</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>To</th>
+                  <th>Amount</th>
+                  <th>Reason</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="mpesaTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TASKS -->
+        <section id="view-tasks" class="view">
+          <div class="view-header">
+            <h1>Tasks</h1>
+          </div>
+          <div class="task-input">
+            <input type="text" id="taskInput" placeholder="Add a new task..." />
+            <button class="btn primary" id="addTaskBtn">Add</button>
+          </div>
+          <ul class="task-list" id="taskList"></ul>
+        </section>
+
+        <!-- NOTES -->
+        <section id="view-notes" class="view">
+          <h1>Notes</h1>
+          <textarea id="notesArea" placeholder="Write your notes here..."></textarea>
+          <button class="btn primary" id="saveNotesBtn" style="margin-top:0.75rem">Save Notes</button>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
