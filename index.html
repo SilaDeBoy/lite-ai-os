@@ -6,6 +6,16 @@
   <title>Lite AI OS</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://js.puter.com/v2/"></script>
+  <script>
+    // Let Puter select its available default model instead of pinning the app
+    // to a model ID that may not be enabled for this account or SDK version.
+    window.addEventListener("load", () => {
+      if (window.puter?.ai?.chat) {
+        const chat = window.puter.ai.chat.bind(window.puter.ai);
+        window.puter.ai.chat = (messages) => chat(messages);
+      }
+    });
+  </script>
 </head>
 <body>
   <div class="os">
